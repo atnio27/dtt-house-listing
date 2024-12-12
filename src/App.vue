@@ -1,12 +1,10 @@
 <template>
-  <div id="app">
-    <header>
-      <Navigation />
-    </header>
-    <main>
-      <router-view></router-view>
-    </main>
-  </div>
+  <header>
+    <Navigation />
+  </header>
+  <main>
+    <router-view></router-view>
+  </main>
 </template>
 
 <script setup>
@@ -15,10 +13,13 @@ import Navigation from './components/Navigation.vue'
 
 <style>
 #app {
+  display: flex;
   font-family: Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: black;
   margin-top: 60px;
+
+  main {
+    padding-top: 88px;
+  }
 }
 </style>
