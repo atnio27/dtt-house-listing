@@ -1,24 +1,26 @@
 <template>
-  <div v-for="house in houses" :key="house.id" class="house-info">
-    <img :src="house.image" :alt="house.address" class="house-image" />
-    <div class="house-details">
-      <h2>{{ house.location.street }}</h2>
-      <p class="price">&euro; {{ house.price }}</p>
-      <p class="address">({{ house.location.houseNumber }} {{ house.location.city }})</p>
-      <div class="house-features">
-        <span class="feature"><img src="../assets/icons/ic_bed@3x.png" alt="Bed Icon" class="icon small-icon" />
-          1</span>
-        <span class="feature"><img src="../assets/icons/ic_bath@3x.png" alt="Bed Icon"
-            class="icon small-icon" />1</span>
-        <span class="feature"><img src="../assets/icons/ic_size@3x.png" alt="Bed Icon" class="icon small-icon" /> 120
-          m<sup>2</sup></span>
+  <div class="house-list">
+    <div v-for="house in houses" :key="house.id" class="house-info">
+      <img :src="house.image" :alt="house.address" class="house-image" />
+      <div class="house-details">
+        <h2>{{ house.location.street }}</h2>
+        <p class="price">&euro; {{ house.price }}</p>
+        <p class="address">({{ house.location.houseNumber }} {{ house.location.city }})</p>
+        <div class="house-features">
+          <span class="feature"><img src="../assets/icons/ic_bed@3x.png" alt="Bed Icon" class="icon small-icon" />
+            1</span>
+          <span class="feature"><img src="../assets/icons/ic_bath@3x.png" alt="Bed Icon"
+              class="icon small-icon" />1</span>
+          <span class="feature"><img src="../assets/icons/ic_size@3x.png" alt="Bed Icon" class="icon small-icon" />
+            120m<sup>2</sup></span>
+        </div>
       </div>
-    </div>
-    <div class="house-actions">
-      <button class="edit-button"><img src="../assets/icons/ic_edit@3x.png" alt="Edit Icon"
-          class="icon small-icon" /></button>
-      <button class="delete-button"><img src="../assets/icons/ic_delete@3x.png" alt="Delete Icon"
-          class="icon small-icon" /></button>
+      <div class="house-actions">
+        <button class="edit-button"><img src="../assets/icons/ic_edit@3x.png" alt="Edit Icon"
+            class="icon small-icon" /></button>
+        <button class="delete-button"><img src="../assets/icons/ic_delete@3x.png" alt="Delete Icon"
+            class="icon small-icon" /></button>
+      </div>
     </div>
   </div>
 </template>
@@ -50,8 +52,8 @@ onMounted(async () => {
   border-radius: 4px;
   padding: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 900px;
-  max-width: 900px;
+  width: auto;
+  /* max-width: 900px; */
   margin: 16px auto;
 }
 
