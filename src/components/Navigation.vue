@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <div class="header-content">
     <svg width="130px" height="43px" viewBox="0 0 130 43" version="1.1" xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>img_DTT_logo_black</title>
@@ -32,11 +32,12 @@
         </g>
       </g>
     </svg>
-    <img data-pagespeed-lsc-url="https://www.d-tt.nl/en/assets/site/img/img_DTT_logo_black.svg">
-    <router-link to="/" :class="{ active: $route.path === '/' }">Houses</router-link>
-    <router-link to="/" :class="{ active: $route.path === '/' }">About</router-link>
-    <!-- I'll add more navigation items later if needed -->
-  </nav>
+    <nav class="nav">
+      <router-link class="nav-link" to="/houses" :class="{ active: $route.path === '/houses' }">Houses</router-link>
+      <router-link class="nav-link" to="/about" :class="{ active: $route.path === '/about' }">About</router-link>
+      <!-- I'll add more navigation items later if needed -->
+    </nav>
+  </div>
 </template>
 
 <script setup>
@@ -44,26 +45,36 @@
 </script>
 
 <style scoped>
-nav {
+.header-content {
   display: flex;
-  background-color: white;
-  position: fixed;
-  right: 0;
-  left: 0;
-  justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1rem;
+  padding: 0 320px;
+  min-height: 80px;
+  gap: 40px;
+  zoom: 0.7;
 
+  .nav {
+    display: flex;
+    gap: 40px;
+    z-index: 9999;
+  }
 
-}
+  .nav-link {
+    font-size: large;
+    font-weight: bold;
+    color: rgb(181, 181, 181);
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
 
-a {
-  color: #333;
-  text-decoration: none;
-}
+    &.active {
+      color: black;
+    }
 
-a.active {
-  font-weight: bold;
+    &:hover {
+      background-color: rgb(245, 245, 245);
+    }
+  }
 }
 </style>
