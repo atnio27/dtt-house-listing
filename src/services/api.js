@@ -11,6 +11,9 @@ const apiClient = axios.create({
 export default {
   getHouses() {
     return apiClient.get('/houses')
+  },
+  getHouseById(id) {
+    return apiClient.get(`/houses/${id}`)
   }
 }
 
