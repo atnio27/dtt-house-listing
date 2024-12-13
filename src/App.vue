@@ -1,8 +1,8 @@
 <template>
-  <header>
+  <header class="header">
     <Navigation />
   </header>
-  <main>
+  <main class="main">
     <router-view></router-view>
   </main>
 </template>
@@ -16,10 +16,20 @@ import Navigation from './components/Navigation.vue'
   display: flex;
   font-family: Arial, sans-serif;
   color: black;
-  margin-top: 60px;
 
-  main {
-    padding-top: 88px;
+  .header {
+    background-color: rgb(255, 255, 255, 0.7);
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgb(212, 217, 219);
+    z-index: 999;
+  }
+
+  .main {
+    margin-top: 60px;
   }
 }
 </style>
