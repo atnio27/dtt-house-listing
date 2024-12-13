@@ -25,7 +25,6 @@
           </button>
         </div>
       </footer>
-
       <p v-if="filteredHouses.length > 0 && searchQuery" class="results-count">
         {{ filteredAndSortedHouses.length }} result{{ filteredAndSortedHouses.length !== 1 ? 's' : '' }} found
       </p>
@@ -126,7 +125,6 @@ h1 {
       left: 9px;
     }
   }
-
 
   .create-button {
     border: none;
@@ -232,8 +230,10 @@ footer {
 
 .results-count,
 .no-results {
+  margin-left: 15px;
+  /* margin-top: 10px; */
+
   font-weight: bold;
-  margin-top: 10px;
 }
 
 .small-icon {
