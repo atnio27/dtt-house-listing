@@ -1,15 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
+import HouseDetailView from '@/views/HouseDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/houses',
       name: 'home',
       component: HomeView
     },
-    // I'll add more routes as I create them
+    {
+      path: '/houses/:id',
+      name: 'house-detail',
+      component: HouseDetailView
+    },
+    {
+      path: "/**",
+      redirect: "/houses"
+    },
+    {
+      path: '',
+      redirect: '/houses'
+    }
   ]
 })
 
