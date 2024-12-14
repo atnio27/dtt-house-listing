@@ -230,9 +230,9 @@ footer {
 
 .results-count,
 .no-results {
-  margin-left: 15px;
+  /* margin-left: 15px; */
   /* margin-top: 10px; */
-
+  font-size: medium;
   font-weight: bold;
 }
 
