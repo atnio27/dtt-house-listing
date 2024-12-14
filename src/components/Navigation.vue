@@ -33,7 +33,8 @@
       </g>
     </svg>
     <nav class="nav">
-      <router-link class="nav-link" to="/houses" :class="{ active: $route.path === '/houses' }">Houses</router-link>
+      <router-link class="nav-link" to="/houses"
+        :class="{ active: $route.path.includes('/houses') }">Houses</router-link>
       <router-link class="nav-link" to="/about" :class="{ active: $route.path === '/about' }">About</router-link>
       <!-- I'll add more navigation items later if needed -->
     </nav>
