@@ -3,15 +3,16 @@
     <div class="back-navigation">
       <router-link to="/houses" class="back-link">
         <img src="@/assets/icons/ic_back_grey@3x.png" alt="Back" class="icon">
-        Back to overview
+
       </router-link>
+      <span>Back to overview</span>
     </div>
 
     <div class="content-wrapper">
       <div class="main-content">
         <img :src="house?.image" :alt="house?.location?.street" class="main-image">
 
-        <div class="house-info">
+        <div class="info">
           <div class="title-section">
             <h1>{{ house?.location?.street }}</h1>
             <div class="action-buttons">
@@ -24,66 +25,52 @@
             </div>
           </div>
 
-          <p class="address">
-            <img src="../assets/icons/ic_location@3x.png" alt="Location" class="icon">
-            {{ house?.location?.postcode }} {{ house?.location?.city }}
-          </p>
+          <div class="info-details">
+            <p class="address">
+              <img src="../assets/icons/ic_location@3x.png" alt="Location" class="icon">
+              <span>{{ house?.location?.postcode }} {{ house?.location?.city }}</span>
+            </p>
 
-          <div class="details-grid">
-            <div class="detail-item">
-              <img src="../assets/icons/ic_price@3x.png" alt="Price" class="icon">
-              € {{ formatPrice(house?.price) }}
+            <div class="details-grid">
+              <div class="detail-item">
+                <img src="../assets/icons/ic_price@3x.png" alt="Price" class="icon">
+                <span>{{ formatPrice(house?.price) }}</span>
+              </div>
+              <div class="detail-item">
+                <img src="../assets/icons/ic_size@3x.png" alt="Size" class="icon">
+                <span>{{ house?.size }} m2</span>
+              </div>
+              <div class="detail-item">
+                <img src="../assets/icons/ic_construction_date@3x.png" alt="Construction Date"
+                  class="icon construction">
+                <span>Built in {{ house?.constructionYear }}</span>
+              </div>
             </div>
-            <div class="detail-item">
-              <img src="../assets/icons/ic_size@3x.png" alt="Size" class="icon">
-              {{ house?.size }} m²
+
+            <div class="features-grid">
+              <div class="feature-item">
+                <img src="../assets/icons/ic_bed@3x.png" alt="Bedrooms" class="icon">
+                {{ house?.rooms?.bedrooms }}
+              </div>
+              <div class="feature-item">
+                <img src="../assets/icons/ic_bath@3x.png" alt="Bathrooms" class="icon">
+                {{ house?.rooms?.bathrooms }}
+              </div>
+              <div class="feature-item">
+                <img src="../assets/icons/ic_garage@3x.png" alt="Garage" class="icon">
+                {{ house?.garage ? 'Yes' : 'No' }}
+              </div>
             </div>
-            <div class="detail-item">
-              <img src="../assets/icons/ic_construction_date@3x.png" alt="Construction Date" class="icon">
-              Built in {{ house?.construction_year }}
-            </div>
+
+            <p class="description">{{ house?.description }}</p>
           </div>
-
-          <div class="features-grid">
-            <div class="feature-item">
-              <img src="../assets/icons/ic_bed@3x.png" alt="Bedrooms" class="icon">
-              {{ house?.rooms?.bedrooms }}
-            </div>
-            <div class="feature-item">
-              <img src="../assets/icons/ic_bath@3x.png" alt="Bathrooms" class="icon">
-              {{ house?.rooms?.bathrooms }}
-            </div>
-            <div class="feature-item">
-              <img src="../assets/icons/ic_garage@3x.png" alt="Garage" class="icon">
-              {{ house?.garage ? 'Yes' : 'No' }}
-            </div>
-          </div>
-
-          <p class="description">{{ house?.description }}</p>
         </div>
       </div>
 
       <div class="sidebar">
-        <h2>Recommended for you</h2>
+        <h5>Recommended for you</h5>
         <div class="recommendations">
-          <div v-for="recommendation in recommendations" :key="recommendation.id" class="recommendation-card">
-            <img :src="recommendation.image" class="recommendation-image">
-            <div class="recommendation-info">
-              <!-- <h3>{{ recommendation.location.street }}</h3> -->
-              <p class="price">€ {{ formatPrice(recommendation.price) }}</p>
-              <!-- <p class="location"> {{ recommendation.location.city }}</p> -->
-              <div class="features">
-                <span><img src="../assets/icons/ic_bed@3x.png" alt="Bedrooms" class="icon">
-                  <!-- {{recommendation.rooms.bedrooms }} -->
-                </span>
-                <span><img src="../assets/icons/ic_bath@3x.png" alt="Bathrooms" class="icon">
-                  <!-- {{  recommendation.rooms.bathrooms }} -->
-                </span>
-                <span><img src="../assets/icons/ic_size@3x.png" alt="Size" class="icon"> {{ recommendation.size
-                  }}m²</span>
-              </div>
-            </div>
-          </div>
+          <HouseList :houses="recommendations" />
         </div>
       </div>
     </div>
@@ -94,6 +81,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '../services/api.js'
+import HouseList from '@/components/HouseList.vue';
 
 
 
@@ -111,7 +99,7 @@ onMounted(async () => {
     const response = await api.getHouseById(route.params.id);
     house.value = response.data[0];
     // In a real app, you I wouldfetch actual recommendations
-    recommendations.value = Array(3).fill(response.data)
+    recommendations.value = Array(3).fill(response.data[0])
   } catch (error) {
     console.error('Error fetching house details:', error)
     router.push('/')
@@ -122,12 +110,21 @@ onMounted(async () => {
 <style scoped>
 .house-detail {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 140px;
   padding: 20px;
 }
 
 .back-navigation {
+  display: flex;
+  margin-top: 10px;
   margin-bottom: 20px;
+  gap: 8px;
+
+  span {
+    font-size: small;
+    font-weight: 600;
+    color: var(--primary-text);
+  }
 }
 
 .back-link {
@@ -142,13 +139,14 @@ onMounted(async () => {
 .content-wrapper {
   display: grid;
   grid-template-columns: 1fr 300px;
-  gap: 40px;
+  gap: 65px;
 }
 
 .main-content {
   background: white;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   overflow: hidden;
+  /* display: flex; */
 }
 
 .main-image {
@@ -157,65 +155,106 @@ onMounted(async () => {
   object-fit: cover;
 }
 
-.house-info {
-  padding: 24px;
-}
-
-.title-section {
+.info-details {
+  /* padding-left: 5px; */
+  /* padding-top: 6px; */
+  padding: 5px;
+  font-size: small;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 14px;
+
+
+  img {
+    width: 12px;
+    height: 15px;
+  }
+
 }
 
-.action-buttons {
+.info {
+  padding: 20px;
   display: flex;
-  gap: 8px;
-}
+  flex-direction: column;
 
-.edit-button,
-.delete-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-}
+  .title-section {
+    display: flex;
+    justify-content: space-between;
 
-.address {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--secondary-text);
-  margin-bottom: 24px;
+    h1 {
+      font-size: 24px;
+      text-wrap: nowrap;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .edit-button,
+  .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    /* padding: 8px; */
+  }
+
+  .address {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--secondary-text);
+    /* margin-bottom: 24px; */
+    /* zoom: 0.7; */
+
+  }
 }
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(3, 90px);
+  /* gap: 16px; */
 }
 
 .detail-item {
   display: flex;
-  align-items: center;
   gap: 8px;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+
+  img.construction {
+    width: 14px;
+    height: 12px;
+  }
+
+  span {
+    font-size: smaller;
+    color: var(--secondary-text);
+    text-wrap: nowrap;
+  }
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-  padding: 16px;
-  background: var(--background-1);
-  border-radius: 8px;
+  grid-template-columns: repeat(3, 50px);
+  /* gap: 16px; */
+  /* margin-bottom: 24px; */
+  /* padding: 16px; */
 }
 
 .feature-item {
   display: flex;
   align-items: center;
   gap: 8px;
+
+  img {
+    width: 14px;
+    height: 12px;
+  }
 }
 
 .description {
@@ -223,21 +262,11 @@ onMounted(async () => {
   line-height: 1.6;
 }
 
-.sidebar {
-  background: white;
-  border-radius: 8px;
-  padding: 24px;
-}
-
-h2 {
-  margin-bottom: 16px;
-  font-size: 18px;
-}
-
 .recommendations {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  zoom: .72;
 }
 
 .recommendation-card {
@@ -288,6 +317,17 @@ h2 {
 .icon {
   width: 16px;
   height: 16px;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+}
+
+.error {
+  color: var(--primary);
 }
 
 @media (max-width: 768px) {
