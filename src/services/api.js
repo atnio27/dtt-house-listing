@@ -14,6 +14,6 @@ export default {
   },
   getHouseById(id) {
     return apiClient.get(`/houses/${id}`)
-  }
+  },
 }
 
