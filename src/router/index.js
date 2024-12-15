@@ -16,15 +16,15 @@ const router = createRouter({
       component: HouseDetailView
     },
     {
-      path: "/**",
-      redirect: "/houses"
+      path: '/',
+      redirect: '/houses'
     },
     {
-      path: '',
+      path: '/:pathMatch(.*)*',
       redirect: '/houses'
     }
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return {top: 0}
   }
 })
