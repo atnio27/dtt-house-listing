@@ -1,11 +1,6 @@
 <template>
   <div class="house-detail">
-    <div class="back-navigation">
-      <router-link to="/houses" class="back-link">
-        <img src="@/assets/icons/ic_back_grey@3x.png" alt="Back" class="icon">
-      </router-link>
-      <span>Back to overview</span>
-    </div>
+    <BackNavigation />
 
     <div class="content-wrapper">
       <HouseCardDetailed :house="house" />
@@ -24,25 +19,26 @@
 import { ref } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import api from '../services/api.js'
-import HouseList from '@/components/HouseList.vue';
-import HouseCardDetailed from '@/components/HouseCardDetailed.vue';
+import HouseList from '@/components/HouseList.vue'
+import HouseCardDetailed from '@/components/HouseCardDetailed.vue'
+import BackNavigation from '@/components/BackNavigation.vue'
 
 const route = useRoute()
 
-const id = route.params.id;
+const id = route.params.id
 
 const house = ref(null)
 const recommendations = ref([])
 
 const loadHouseData = async (id) => {
   try {
-    const response = await api.getHouseById(id);
-    house.value = response.data[0];
+    const response = await api.getHouseById(id)
+    house.value = response.data[0]
 
-    const recommendationsResponse = await api.getHouses();
-    const filteredRecommendations = recommendationsResponse.data.filter(h => h.id !== +id);
-    const start = Math.floor((Math.random() % 0.7) * 10);
-    recommendations.value = filteredRecommendations.slice(start, start + 3);
+    const recommendationsResponse = await api.getHouses()
+    const filteredRecommendations = recommendationsResponse.data.filter((h) => h.id !== +id)
+    const start = Math.floor((Math.random() % 0.7) * 10)
+    recommendations.value = filteredRecommendations.slice(start, start + 3)
   } catch (error) {
     console.error('Error fetching house data:', error)
   }
@@ -94,7 +90,7 @@ onBeforeRouteUpdate((to) => {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  zoom: .72;
+  zoom: 0.72;
 }
 
 .recommendation-card {
