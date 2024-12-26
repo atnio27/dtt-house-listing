@@ -6,32 +6,43 @@
       <p class="price">&euro; {{ formatPrice(house.price) }}</p>
       <p class="address">({{ house.location.houseNumber }} {{ house.location.city }})</p>
       <div class="house-features">
-        <span class="feature"><img src="@/assets/icons/ic_bed@3x.png" alt="Bed Icon" class="icon small-icon" />
-          {{ house.rooms.bedrooms }}</span>
-        <span class="feature"><img src="@/assets/icons/ic_bath@3x.png" alt="Bathrooms Icon" class="icon small-icon" />{{
-          house.rooms.bathrooms }}</span>
-        <span class="feature"><img src="@/assets/icons/ic_size@3x.png" alt="Bed Icon" class="icon small-icon" />
-          {{ house.size }}m<sup>2</sup></span>
+        <span class="feature"
+          ><img src="@/assets/icons/ic_bed@3x.png" alt="Bed Icon" class="icon small-icon" />
+          {{ house.rooms.bedrooms }}</span
+        >
+        <span class="feature"
+          ><img
+            src="@/assets/icons/ic_bath@3x.png"
+            alt="Bathrooms Icon"
+            class="icon small-icon"
+          />{{ house.rooms.bathrooms }}</span
+        >
+        <span class="feature"
+          ><img src="@/assets/icons/ic_size@3x.png" alt="Bed Icon" class="icon small-icon" />
+          {{ house.size }}m<sup>2</sup></span
+        >
       </div>
     </div>
     <div class="house-actions">
-      <button class="edit-button"><img src="@/assets/icons/ic_edit@3x.png" alt="Edit Icon"
-          class="icon small-icon" /></button>
-      <button class="delete-button"><img src="@/assets/icons/ic_delete@3x.png" alt="Delete Icon"
-          class="icon small-icon" /></button>
+      <button class="edit-button">
+        <img src="@/assets/icons/ic_edit@3x.png" alt="Edit Icon" class="icon small-icon" />
+      </button>
+      <button class="delete-button">
+        <img src="@/assets/icons/ic_delete@3x.png" alt="Delete Icon" class="icon small-icon" />
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import router from '@/router';
+import router from '@/router'
 import { defineProps } from 'vue'
 
-const props = defineProps({
+defineProps({
   house: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const formatPrice = (price) => {
