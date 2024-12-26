@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <Navigation />
+    <NavigationComponent />
   </header>
   <main class="main">
     <router-view></router-view>
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import Navigation from './components/Navigation.vue'
+import NavigationComponent from './components/NavigationComponent.vue'
 </script>
 
 <style>
