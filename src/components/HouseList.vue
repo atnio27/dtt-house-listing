@@ -10,10 +10,10 @@
 import { defineProps } from 'vue'
 import HouseCard from '../components/HouseCard.vue'
 
-const props = defineProps({
+defineProps({
   houses: {
     type: Array,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
