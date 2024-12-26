@@ -4,33 +4,53 @@
       <header>
         <h1>Houses</h1>
         <div class="create-container">
-          <img src="../assets/icons/ic_plus_white@3x.png" alt="Create new house" class="icon small-icon">
-          <button class="create-button">CREATE NEW</button>
+          <router-link to="/houses/create" class="create-button"
+            >CREATE NEW
+            <img
+              src="../assets/icons/ic_plus_white@3x.png"
+              alt="Create new house"
+              class="icon small-icon"
+            />
+          </router-link>
         </div>
       </header>
       <footer>
         <div class="search-container">
-          <img src="../assets/icons/ic_search@3x.png" alt="Clear search" class="icon small-icon">
-          <input type="text" v-model="searchQuery" placeholder="Search for a house" @input="handleSearch">
+          <img src="../assets/icons/ic_search@3x.png" alt="Clear search" class="icon small-icon" />
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Search for a house"
+            @input="handleSearch"
+          />
           <a v-if="searchQuery" @click="clearSearch" class="clear-search">
-            <img src="../assets/icons/ic_clear@3x.png" alt="Clear search" class="icon small-icon">
+            <img src="../assets/icons/ic_clear@3x.png" alt="Clear search" class="icon small-icon" />
           </a>
         </div>
         <div class="sort-toggle">
-          <button @click="setSort('price')" :class="{ active: currentSort === 'price' }" class="sort-button left">
+          <button
+            @click="setSort('price')"
+            :class="{ active: currentSort === 'price' }"
+            class="sort-button left"
+          >
             Price
           </button>
-          <button @click="setSort('size')" :class="{ active: currentSort === 'size' }" class="sort-button right">
+          <button
+            @click="setSort('size')"
+            :class="{ active: currentSort === 'size' }"
+            class="sort-button right"
+          >
             Size
           </button>
         </div>
       </footer>
       <p v-if="filteredHouses.length > 0 && searchQuery" class="results-count">
-        {{ filteredAndSortedHouses.length }} result{{ filteredAndSortedHouses.length !== 1 ? 's' : '' }} found
+        {{ filteredAndSortedHouses.length }} result{{
+          filteredAndSortedHouses.length !== 1 ? 's' : ''
+        }}
+        found
       </p>
-      <p v-else-if="searchQuery" class="no-results">
-        No results found for "{{ searchQuery }}"
-      </p>
+      <p v-else-if="searchQuery" class="no-results">No results found for "{{ searchQuery }}"</p>
     </div>
     <HouseList :houses="filteredAndSortedHouses" />
   </div>
@@ -52,10 +72,11 @@ const setSort = (sort) => {
 const filteredHouses = computed(() => {
   if (!searchQuery.value) return houses.value
   const lowercaseQuery = searchQuery.value.toLowerCase()
-  return houses.value.filter(house =>
-    house.location.street.toLowerCase().includes(lowercaseQuery) ||
-    house.location.city.toLowerCase().includes(lowercaseQuery) ||
-    house.price.toString().includes(lowercaseQuery)
+  return houses.value.filter(
+    (house) =>
+      house.location.street.toLowerCase().includes(lowercaseQuery) ||
+      house.location.city.toLowerCase().includes(lowercaseQuery) ||
+      house.price.toString().includes(lowercaseQuery),
   )
 })
 
@@ -185,7 +206,6 @@ footer {
       }
     }
   }
-
 }
 
 .clear-search {
