@@ -1,52 +1,56 @@
 <template>
   <div class="main-content">
-    <img :src="house?.image" :alt="house?.location?.street" class="main-image">
+    <img :src="house?.image" :alt="house?.location?.street" class="main-image" />
 
     <div class="info">
       <div class="title-section">
         <h1>{{ house?.location?.street }}</h1>
         <div class="action-buttons">
           <button class="edit-button">
-            <img src="../assets/icons/ic_edit@3x.png" alt="Edit" class="icon">
+            <img src="../assets/icons/ic_edit@3x.png" alt="Edit" class="icon" />
           </button>
           <button class="delete-button">
-            <img src="../assets/icons/ic_delete@3x.png" alt="Delete" class="icon">
+            <img src="../assets/icons/ic_delete@3x.png" alt="Delete" class="icon" />
           </button>
         </div>
       </div>
 
       <div class="info-details">
         <p class="address">
-          <img src="../assets/icons/ic_location@3x.png" alt="Location" class="icon">
+          <img src="../assets/icons/ic_location@3x.png" alt="Location" class="icon" />
           <span>{{ house?.location?.postcode }} {{ house?.location?.city }}</span>
         </p>
 
         <div class="details-grid">
           <div class="detail-item">
-            <img src="../assets/icons/ic_price@3x.png" alt="Price" class="icon">
+            <img src="../assets/icons/ic_price@3x.png" alt="Price" class="icon" />
             <span>{{ formatPrice(house?.price) }}</span>
           </div>
           <div class="detail-item">
-            <img src="../assets/icons/ic_size@3x.png" alt="Size" class="icon">
+            <img src="../assets/icons/ic_size@3x.png" alt="Size" class="icon" />
             <span>{{ house?.size }} m2</span>
           </div>
           <div class="detail-item">
-            <img src="../assets/icons/ic_construction_date@3x.png" alt="Construction Date" class="icon">
+            <img
+              src="../assets/icons/ic_construction_date@3x.png"
+              alt="Construction Date"
+              class="icon"
+            />
             <span>Built in {{ house?.constructionYear }}</span>
           </div>
         </div>
 
         <div class="features-grid">
           <div class="feature-item">
-            <img src="../assets/icons/ic_bed@3x.png" alt="Bedrooms" class="icon">
+            <img src="../assets/icons/ic_bed@3x.png" alt="Bedrooms" class="icon" />
             {{ house?.rooms?.bedrooms }}
           </div>
           <div class="feature-item">
-            <img src="../assets/icons/ic_bath@3x.png" alt="Bathrooms" class="icon">
+            <img src="../assets/icons/ic_bath@3x.png" alt="Bathrooms" class="icon" />
             {{ house?.rooms?.bathrooms }}
           </div>
           <div class="feature-item">
-            <img src="../assets/icons/ic_garage@3x.png" alt="Garage" class="icon">
+            <img src="../assets/icons/ic_garage@3x.png" alt="Garage" class="icon" />
             {{ house?.garage ? 'Yes' : 'No' }}
           </div>
         </div>
@@ -58,11 +62,11 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   house: {
     type: null,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const formatPrice = (price) => {
