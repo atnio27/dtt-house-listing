@@ -1,4 +1,4 @@
-<template class="background-image">
+<template>
   <div class="background-wrapper">
     <div class="create-house">
       <BackNavigation />
@@ -8,74 +8,44 @@
       <form @submit.prevent="handleSubmit" class="create-form">
         <div class="form-grid">
           <div class="form-group full-width">
-            <label for="street">Street name*</label>
-            <input
-              type="text"
-              id="street"
-              v-model="formData.street"
-              placeholder="Enter the street name"
-              :class="{ error: errors.street }"
-            />
-            <span class="error-message" v-if="errors.street">{{ errors.street }}</span>
+            <label for="streetName">Street name*</label>
+            <input type="text" id="streetName" v-model="formData.streetName" placeholder="Enter the street name"
+              :class="{ error: errors.streetName }" />
+            <span class="error-message" v-if="errors.streetName">{{ errors.streetName }}</span>
           </div>
 
           <div class="form-group">
             <label for="houseNumber">House number*</label>
-            <input
-              type="text"
-              id="houseNumber"
-              v-model="formData.houseNumber"
-              placeholder="Enter house number"
-              :class="{ error: errors.houseNumber }"
-            />
+            <input type="text" id="houseNumber" v-model="formData.houseNumber" placeholder="Enter house number"
+              :class="{ error: errors.houseNumber }" />
             <span class="error-message" v-if="errors.houseNumber">{{ errors.houseNumber }}</span>
           </div>
 
           <div class="form-group">
-            <label for="addition">Addition (optional)</label>
-            <input type="text" id="addition" v-model="formData.addition" placeholder="e.g. A" />
+            <label for="numberAddition">Addition (optional)</label>
+            <input type="text" id="numberAddition" v-model="formData.numberAddition" placeholder="e.g. A" />
           </div>
 
           <div class="form-group full-width">
-            <label for="postalCode">Postal code*</label>
-            <input
-              type="text"
-              id="postalCode"
-              v-model="formData.postalCode"
-              placeholder="e.g. 1000 AA"
-              :class="{ error: errors.postalCode }"
-            />
-            <span class="error-message" v-if="errors.postalCode">{{ errors.postalCode }}</span>
+            <label for="zip">Postal code*</label>
+            <input type="text" id="zip" v-model="formData.zip" placeholder="e.g. 1000 AA"
+              :class="{ error: errors.zip }" />
+            <span class="error-message" v-if="errors.zip">{{ errors.zip }}</span>
           </div>
 
           <div class="form-group full-width">
             <label for="city">City*</label>
-            <input
-              type="text"
-              id="city"
-              v-model="formData.city"
-              placeholder="e.g. Utrecht"
-              :class="{ error: errors.city }"
-            />
+            <input type="text" id="city" v-model="formData.city" placeholder="e.g. Utrecht"
+              :class="{ error: errors.city }" />
             <span class="error-message" v-if="errors.city">{{ errors.city }}</span>
           </div>
 
           <div class="form-group">
             <label>Upload picture (PNG or JPG)*</label>
-            <div
-              class="upload-area"
-              :class="{ error: errors.image, 'has-image': imagePreview }"
-              @click="triggerFileInput"
-              @dragover.prevent
-              @drop.prevent="handleFileDrop"
-            >
-              <input
-                type="file"
-                ref="fileInput"
-                @change="handleFileSelect"
-                accept="image/png,image/jpeg"
-                class="hidden"
-              />
+            <div class="upload-area" :class="{ error: errors.image, 'has-image': imagePreview }"
+              @click="triggerFileInput" @dragover.prevent @drop.prevent="handleFileDrop">
+              <input type="file" ref="fileInput" @change="handleFileSelect" accept="image/png,image/jpeg"
+                class="hidden" />
               <template v-if="imagePreview">
                 <img :src="imagePreview" alt="Preview" class="image-preview" />
                 <button type="button" class="remove-image" @click.stop="removeImage">×</button>
@@ -91,92 +61,62 @@
 
           <div class="form-group full-width">
             <label for="price">Price*</label>
-            <input
-              type="number"
-              id="price"
-              v-model="formData.price"
-              placeholder="e.g. €150.000"
-              :class="{ error: errors.price }"
-            />
+            <input type="number" id="price" v-model="formData.price" placeholder="e.g. €150.000"
+              :class="{ error: errors.price }" />
             <span class="error-message" v-if="errors.price">{{ errors.price }}</span>
           </div>
 
           <div class="form-group">
             <label for="size">Size*</label>
-            <input
-              type="number"
-              id="size"
-              v-model="formData.size"
-              placeholder="e.g. 60m2"
-              :class="{ error: errors.size }"
-            />
+            <input type="number" id="size" v-model="formData.size" placeholder="e.g. 60m2"
+              :class="{ error: errors.size }" />
             <span class="error-message" v-if="errors.size">{{ errors.size }}</span>
           </div>
 
           <div class="form-group">
-            <label for="garage">Garage*</label>
-            <select id="garage" v-model="formData.garage" :class="{ error: errors.garage }">
+            <label for="hasGarage">Garage*</label>
+            <select id="hasGarage" v-model="formData.hasGarage" :class="{ error: errors.hasGarage }">
               <option value="">Select</option>
               <option :value="true">Yes</option>
               <option :value="false">No</option>
             </select>
-            <span class="error-message" v-if="errors.garage">{{ errors.garage }}</span>
+            <span class="error-message" v-if="errors.hasGarage">{{ errors.hasGarage }}</span>
           </div>
 
           <div class="form-group">
             <label for="bedrooms">Bedrooms*</label>
-            <input
-              type="number"
-              id="bedrooms"
-              v-model="formData.bedrooms"
-              placeholder="Enter amount"
-              :class="{ error: errors.bedrooms }"
-            />
+            <input type="number" id="bedrooms" v-model="formData.bedrooms" placeholder="Enter amount"
+              :class="{ error: errors.bedrooms }" />
             <span class="error-message" v-if="errors.bedrooms">{{ errors.bedrooms }}</span>
           </div>
 
           <div class="form-group">
             <label for="bathrooms">Bathrooms*</label>
-            <input
-              type="number"
-              id="bathrooms"
-              v-model="formData.bathrooms"
-              placeholder="Enter amount"
-              :class="{ error: errors.bathrooms }"
-            />
+            <input type="number" id="bathrooms" v-model="formData.bathrooms" placeholder="Enter amount"
+              :class="{ error: errors.bathrooms }" />
             <span class="error-message" v-if="errors.bathrooms">{{ errors.bathrooms }}</span>
           </div>
 
           <div class="form-group full-width">
-            <label for="constructionDate">Construction date*</label>
-            <input
-              type="number"
-              id="constructionDate"
-              v-model="formData.constructionDate"
-              placeholder="e.g. 1990"
-              :class="{ error: errors.constructionDate }"
-            />
-            <span class="error-message" v-if="errors.constructionDate">{{
-              errors.constructionDate
+            <label for="constructionYear">Construction date*</label>
+            <input type="number" id="constructionYear" v-model="formData.constructionYear" placeholder="e.g. 1990"
+              :class="{ error: errors.constructionYear }" />
+            <span class="error-message" v-if="errors.constructionYear">{{
+              errors.constructionYear
             }}</span>
           </div>
 
           <div class="form-group full-width">
             <label for="description">Description*</label>
-            <textarea
-              id="description"
-              v-model="formData.description"
-              rows="4"
-              placeholder="Enter description"
-              :class="{ error: errors.description }"
-            ></textarea>
+            <textarea id="description" v-model="formData.description" rows="4" placeholder="Enter description"
+              :class="{ error: errors.description }"></textarea>
             <span class="error-message" v-if="errors.description">{{ errors.description }}</span>
           </div>
 
           <div class="form-group full-width">
             <div class="form-actions">
               <button type="submit" class="submit-button" :disabled="isSubmitting">
-                {{ isSubmitting ? 'Creating...' : 'Post' }}
+                {{ isSubmitting ? 'Creating...' : 'SAVE' }}
               </button>
             </div>
           </div>
@@ -197,35 +137,34 @@ const fileInput = ref(null)
 const imagePreview = ref(null)
 const isSubmitting = ref(false)
 
-const formData = reactive({
-  street: '',
-  houseNumber: '',
-  addition: '',
-  postalCode: '',
-  city: '',
+const formData = {
   price: '',
-  size: '',
-  garage: '',
   bedrooms: '',
   bathrooms: '',
-  constructionDate: '',
+  size: '',
+  streetName: '',
+  houseNumber: '',
+  numberAddition: '',
+  zip: '',
+  city: '',
+  constructionYear: '',
+  hasGarage: false,
   description: '',
   image: null,
-})
+}
 
 const errors = reactive({})
 
 const validateForm = () => {
-  errors.street = !formData.street ? 'Street name is required' : ''
+  errors.streetName = !formData.streetName ? 'Street name is required' : ''
   errors.houseNumber = !formData.houseNumber ? 'House number is required' : ''
-  errors.postalCode = !formData.postalCode ? 'Postal code is required' : ''
+  errors.zip = !formData.zip ? 'Postal code is required' : ''
   errors.city = !formData.city ? 'City is required' : ''
   errors.price = !formData.price ? 'Price is required' : ''
   errors.size = !formData.size ? 'Size is required' : ''
-  errors.garage = formData.garage === '' ? 'Garage selection is required' : ''
   errors.bedrooms = !formData.bedrooms ? 'Number of bedrooms is required' : ''
   errors.bathrooms = !formData.bathrooms ? 'Number of bathrooms is required' : ''
-  errors.constructionDate = !formData.constructionDate ? 'Construction year is required' : ''
+  errors.constructionYear = !formData.constructionYear ? 'Construction year is required' : ''
   errors.description = !formData.description ? 'Description is required' : ''
   errors.image = !formData.image ? 'Image is required' : ''
 
@@ -270,23 +209,14 @@ const handleSubmit = async () => {
   if (!validateForm()) return
 
   isSubmitting.value = true
-  const submitData = new FormData()
-
-  // Add all form fields to FormData
-  Object.keys(formData).forEach((key) => {
-    if (key === 'image') {
-      submitData.append('image', formData.image)
-    } else {
-      submitData.append(key, formData[key])
-    }
-  })
 
   try {
-    const response = await api.createHouse(submitData)
+    console.log(formData);
+    const response = await api.createHouse(formData)
     router.push(`/houses/${response.data.id}`)
   } catch (error) {
-    console.error('Error creating house:', error)
-    // Handle API errors here
+    console.error('Error creating house:', error.response)
+    console.log(formData);
   } finally {
     isSubmitting.value = false
   }
@@ -340,15 +270,12 @@ textarea {
   border: none;
   border-radius: 8px;
   font-size: 10px;
+  text-align: left;
 
   &:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 1.5px var(--primary);
-  }
-
-  &.error {
-    border-color: var(--primary);
   }
 }
 
@@ -358,7 +285,7 @@ textarea {
 }
 
 .error-message {
-  color: var(--primary);
+  color: red;
   font-size: 12px;
 }
 
@@ -388,6 +315,10 @@ textarea {
     padding: 0;
     border-style: solid;
   }
+}
+
+.error {
+  color: var(--secondary-text);
 }
 
 .hidden {
@@ -470,10 +401,9 @@ textarea {
 
 .background-wrapper {
   position: relative;
-  min-height: 100vh;
-  background-image: url('@/assets/images/img_background@3x.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  background-image: url('../assets/icons/img_background@3x.png');
 }
 </style>
