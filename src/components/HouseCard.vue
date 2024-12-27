@@ -1,33 +1,24 @@
 <template>
-  <div class="house-info" @click="navigateToHouseDetail(house.id)">
-    <img :src="house.image" :alt="house.address" class="house-image" />
-    <div class="house-details">
+  <div class="house-info">
+    <img :src="house.image" :alt="house.address" class="house-image" @click="navigateToHouseDetail(house.id)" />
+    <div class="house-details" @click="navigateToHouseDetail(house.id)">
       <h4>{{ house.location.street }}</h4>
       <p class="price">&euro; {{ formatPrice(house.price) }}</p>
       <p class="address">({{ house.location.houseNumber }} {{ house.location.city }})</p>
       <div class="house-features">
-        <span class="feature"
-          ><img src="@/assets/icons/ic_bed@3x.png" alt="Bed Icon" class="icon small-icon" />
-          {{ house.rooms.bedrooms }}</span
-        >
-        <span class="feature"
-          ><img
-            src="@/assets/icons/ic_bath@3x.png"
-            alt="Bathrooms Icon"
-            class="icon small-icon"
-          />{{ house.rooms.bathrooms }}</span
-        >
-        <span class="feature"
-          ><img src="@/assets/icons/ic_size@3x.png" alt="Bed Icon" class="icon small-icon" />
-          {{ house.size }}m<sup>2</sup></span
-        >
+        <span class="feature"><img src="@/assets/icons/ic_bed@3x.png" alt="Bed Icon" class="icon small-icon" />
+          {{ house.rooms.bedrooms }}</span>
+        <span class="feature"><img src="@/assets/icons/ic_bath@3x.png" alt="Bathrooms Icon" class="icon small-icon" />{{
+          house.rooms.bathrooms }}</span>
+        <span class="feature"><img src="@/assets/icons/ic_size@3x.png" alt="Bed Icon" class="icon small-icon" />
+          {{ house.size }} m2</span>
       </div>
     </div>
-    <div class="house-actions">
+    <div class="house-actions" v-if="house.madeByMe === true">
       <button class="edit-button">
         <img src="@/assets/icons/ic_edit@3x.png" alt="Edit Icon" class="icon small-icon" />
       </button>
-      <button class="delete-button">
+      <button class="delete-button" @click="deleteHouse(house.id)">
         <img src="@/assets/icons/ic_delete@3x.png" alt="Delete Icon" class="icon small-icon" />
       </button>
     </div>
@@ -35,8 +26,9 @@
 </template>
 
 <script setup>
+import { defineProps, defineEmits } from 'vue'
 import router from '@/router'
-import { defineProps } from 'vue'
+import api from '@/services/api'
 
 defineProps({
   house: {
@@ -45,6 +37,8 @@ defineProps({
   },
 })
 
+const emit = defineEmits(['delete-house'])
+
 const formatPrice = (price) => {
   return price?.toLocaleString('nl-NL')
 }
@@ -52,6 +46,16 @@ const formatPrice = (price) => {
 const navigateToHouseDetail = (id) => {
   router.push(`/houses/${id}`)
 }
+
+const deleteHouse = async (id) => {
+  try {
+    await api.deleteHouse(id)
+    emit('delete-house', id)
+  } catch (error) {
+    console.error('Error deleting house:', error)
+  }
+}
+
 </script>
 
 <style>
@@ -60,7 +64,7 @@ const navigateToHouseDetail = (id) => {
   align-items: center;
   justify-content: space-between;
   background-color: #fff;
-  /* border: 1px solid #ddd; */
+  border: 1px solid #ddd;
   border-radius: 4px;
   padding: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -111,7 +115,7 @@ const navigateToHouseDetail = (id) => {
 .feature {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 10px;
 }
 
 .house-actions {
