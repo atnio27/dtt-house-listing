@@ -115,7 +115,7 @@
 
           <div class="form-group full-width">
             <div class="form-actions">
-              <button type="submit" class="submit-button" :disabled="isSubmitting">
+              <button type="submit" class="submit-button" :disabled="false" @click="addHouse()">
                 {{ isSubmitting ? 'Creating...' : 'SAVE' }}
               </button>
             </div>
@@ -137,21 +137,21 @@ const fileInput = ref(null)
 const imagePreview = ref(null)
 const isSubmitting = ref(false)
 
-const formData = {
-  price: '',
-  bedrooms: '',
-  bathrooms: '',
-  size: '',
-  streetName: '',
-  houseNumber: '',
-  numberAddition: '',
-  zip: '',
-  city: '',
-  constructionYear: '',
+const formData = reactive({
+  price: '20',
+  bedrooms: '1',
+  bathrooms: '1',
+  size: '1',
+  streetName: 'Overtoom',
+  houseNumber: '21',
+  numberAddition: '1',
+  zip: '1181TY',
+  city: 'Amsterdam',
+  constructionYear: '1960',
   hasGarage: false,
-  description: '',
-  image: null,
-}
+  description: 'Nice house!',
+  image: null
+})
 
 const errors = reactive({})
 
@@ -205,20 +205,37 @@ const removeImage = () => {
   fileInput.value.value = ''
 }
 
-const handleSubmit = async () => {
-  if (!validateForm()) return
+const addHouse = () => {
+  {
+    isSubmitting.value = true
 
-  isSubmitting.value = true
+    if (!validateForm()) {
+      isSubmitting.value = false
+      return
+    }
 
-  try {
-    console.log(formData);
-    const response = await api.createHouse(formData)
-    router.push(`/houses/${response.data.id}`)
-  } catch (error) {
-    console.error('Error creating house:', error.response)
-    console.log(formData);
-  } finally {
-    isSubmitting.value = false
+    const newHouse = {
+      ...formData,
+    };
+
+    api
+      .createHouse(newHouse)
+      .then((response) => {
+        const id = response.data.id;
+        const image = { image: newHouse.image }
+
+        api
+          .uploadImage(id, image)
+          .then(() => {
+            isSubmitting.value = false;
+            router.push('/houses');
+          }).catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }
 </script>
