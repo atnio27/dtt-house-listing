@@ -4,42 +4,24 @@
       <header>
         <h1>Houses</h1>
         <div class="create-container">
-          <router-link to="/houses/create" class="create-button"
-            >CREATE NEW
-            <img
-              src="../assets/icons/ic_plus_white@3x.png"
-              alt="Create new house"
-              class="icon small-icon"
-            />
+          <router-link to="/houses/create" class="create-button">CREATE NEW
+            <img src="../assets/icons/ic_plus_white@3x.png" alt="Create new house" class="icon small-icon" />
           </router-link>
         </div>
       </header>
       <footer>
         <div class="search-container">
           <img src="../assets/icons/ic_search@3x.png" alt="Clear search" class="icon small-icon" />
-          <input
-            type="text"
-            v-model="searchQuery"
-            placeholder="Search for a house"
-            @input="handleSearch"
-          />
+          <input type="text" v-model="searchQuery" placeholder="Search for a house" @input="handleSearch" />
           <a v-if="searchQuery" @click="clearSearch" class="clear-search">
             <img src="../assets/icons/ic_clear@3x.png" alt="Clear search" class="icon small-icon" />
           </a>
         </div>
         <div class="sort-toggle">
-          <button
-            @click="setSort('price')"
-            :class="{ active: currentSort === 'price' }"
-            class="sort-button left"
-          >
+          <button @click="setSort('price')" :class="{ active: currentSort === 'price' }" class="sort-button left">
             Price
           </button>
-          <button
-            @click="setSort('size')"
-            :class="{ active: currentSort === 'size' }"
-            class="sort-button right"
-          >
+          <button @click="setSort('size')" :class="{ active: currentSort === 'size' }" class="sort-button right">
             Size
           </button>
         </div>
@@ -52,7 +34,7 @@
       </p>
       <p v-else-if="searchQuery" class="no-results">No results found for "{{ searchQuery }}"</p>
     </div>
-    <HouseList :houses="filteredAndSortedHouses" />
+    <HouseList :houses="filteredAndSortedHouses" @delete-house="deleteHouse" />
   </div>
 </template>
 
@@ -92,6 +74,10 @@ const filteredAndSortedHouses = computed(() => {
 
 const clearSearch = () => {
   searchQuery.value = ''
+}
+
+const deleteHouse = (id) => {
+  houses.value = houses.value.filter((house) => house.id !== id)
 }
 
 // TAKE THIS TO EXTERNAL FUNCTION
