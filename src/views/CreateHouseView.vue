@@ -229,7 +229,8 @@ const addHouse = () => {
           .then(() => {
             isSubmitting.value = false;
             router.push('/houses');
-          }).catch((error) => {
+          })
+          .catch((error) => {
             console.error(error);
           });
       })
