@@ -16,7 +16,7 @@
 
           <div class="form-group">
             <label for="houseNumber">House number*</label>
-            <input type="text" id="houseNumber" v-model="formData.houseNumber" placeholder="Enter house number"
+            <input type="number" id="houseNumber" v-model="formData.houseNumber" placeholder="Enter house number"
               :class="{ error: errors.houseNumber }" />
             <span class="error-message" v-if="errors.houseNumber">{{ errors.houseNumber }}</span>
           </div>
