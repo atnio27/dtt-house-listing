@@ -42,7 +42,6 @@
 </template>
 
 <script setup>
-// No setup needed for now
 </script>
 
 <style scoped>
