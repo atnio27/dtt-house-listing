@@ -5,7 +5,7 @@
         <h1>Houses</h1>
         <div class="create-container">
           <router-link to="/houses/create" class="create-button">CREATE NEW
-            <img src="../assets/icons/ic_plus_white@3x.png" alt="Create new house" class="icon small-icon" />
+            <img src="../assets/icons/ic_plus_white@3x.png" alt="Create new house" class="create-icon small-icon" />
           </router-link>
         </div>
       </header>
@@ -34,16 +34,16 @@
       </p>
       <p v-else-if="searchQuery" class="no-results">No results found for "{{ searchQuery }}"</p>
     </div>
-    <HouseList :houses="filteredAndSortedHouses" @delete-house="deleteHouse" />
+    <HouseList :houses="filteredAndSortedHouses" />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useHouseStore } from '@/stores/houseStore'
 import HouseList from '../components/HouseList.vue'
-import api from '../services/api'
 
-const houses = ref([])
+const houseStore = useHouseStore()
 const searchQuery = ref('')
 const currentSort = ref('price')
 
@@ -52,9 +52,9 @@ const setSort = (sort) => {
 }
 
 const filteredHouses = computed(() => {
-  if (!searchQuery.value) return houses.value
+  if (!searchQuery.value) return houseStore.houses
   const lowercaseQuery = searchQuery.value.toLowerCase()
-  return houses.value.filter(
+  return houseStore.houses.filter(
     (house) =>
       house.location.street.toLowerCase().includes(lowercaseQuery) ||
       house.location.city.toLowerCase().includes(lowercaseQuery) ||
@@ -63,34 +63,18 @@ const filteredHouses = computed(() => {
 })
 
 const filteredAndSortedHouses = computed(() => {
-  let sorted = [...filteredHouses.value]
-  if (currentSort.value === 'price') {
-    sorted.sort((a, b) => a.price - b.price)
-  } else if (currentSort.value === 'size') {
-    sorted.sort((a, b) => a.size - b.size)
-  }
-  return sorted
+  return houseStore.sortedHouses(currentSort.value).filter(house =>
+    filteredHouses.value.includes(house)
+  )
 })
 
 const clearSearch = () => {
   searchQuery.value = ''
 }
 
-const deleteHouse = (id) => {
-  houses.value = houses.value.filter((house) => house.id !== id)
-}
-
-// TAKE THIS TO EXTERNAL FUNCTION
-const fetchHouses = async () => {
-  try {
-    const response = await api.getHouses()
-    houses.value = response.data
-  } catch (error) {
-    console.error('Error fetching houses:', error)
-  }
-}
-
-fetchHouses()
+onMounted(() => {
+  houseStore.fetchHouses()
+})
 </script>
 
 <style scoped>
@@ -245,5 +229,12 @@ footer {
 .small-icon {
   width: 16px;
   height: 16px;
+}
+
+.create-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: fit;
+  margin-top: 2px;
 }
 </style>
