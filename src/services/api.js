@@ -18,6 +18,9 @@ export default {
   createHouse(data) {
     return apiClient.post('/houses', data)
   },
+  updateHouse(data, id) {
+    return apiClient.post(`/houses/${id}`, data)
+  },
   uploadImage(id, image) {
     return apiClient.post(`/houses/${id}/upload`, image, {
       headers: {
