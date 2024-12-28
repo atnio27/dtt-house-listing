@@ -6,10 +6,10 @@
       <div class="title-section">
         <h1>{{ house?.location?.street }}</h1>
         <div class="action-buttons">
-          <button class="edit-button">
+          <button class="edit-button" @click="navigateToHouseEdit">
             <img src="../assets/icons/ic_edit@3x.png" alt="Edit" class="icon" />
           </button>
-          <button class="delete-button">
+          <button class="delete-button" @click="handleDelete">
             <img src="../assets/icons/ic_delete@3x.png" alt="Delete" class="icon" />
           </button>
         </div>
@@ -31,11 +31,7 @@
             <span>{{ house?.size }} m2</span>
           </div>
           <div class="detail-item">
-            <img
-              src="../assets/icons/ic_construction_date@3x.png"
-              alt="Construction Date"
-              class="icon"
-            />
+            <img src="../assets/icons/ic_construction_date@3x.png" alt="Construction Date" class="icon" />
             <span>Built in {{ house?.constructionYear }}</span>
           </div>
         </div>
@@ -51,7 +47,7 @@
           </div>
           <div class="feature-item">
             <img src="../assets/icons/ic_garage@3x.png" alt="Garage" class="icon" />
-            {{ house?.garage ? 'Yes' : 'No' }}
+            {{ house?.hasGarage ? 'Yes' : 'No' }}
           </div>
         </div>
 
@@ -62,15 +58,36 @@
 </template>
 
 <script setup>
-defineProps({
+import router from '@/router';
+import { useHouseStore } from '@/stores/houseStore';
+
+const props = defineProps({
   house: {
     type: null,
     required: true,
   },
 })
 
+const houseStore = useHouseStore();
+
 const formatPrice = (price) => {
   return price?.toLocaleString('nl-NL')
+}
+
+const handleDelete = async () => {
+  if (confirm('Are you sure you want to delete this house?')) {
+    try {
+      await houseStore.deleteHouse(props.house.id);
+      router.push('/houses');
+    } catch (error) {
+      console.error('Error deleting house:', error);
+      alert('Failed to delete the house. Please try again.');
+    }
+  }
+};
+
+const navigateToHouseEdit = () => {
+  router.push(`/houses/${props.house.id}/edit`)
 }
 </script>
 

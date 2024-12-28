@@ -1,7 +1,7 @@
 <template>
   <div class="house-info">
-    <img :src="house.image" :alt="house.address" class="house-image" @click="navigateToHouseDetail(house.id)" />
-    <div class="house-details" @click="navigateToHouseDetail(house.id)">
+    <img :src="house.image" :alt="house.address" class="house-image" @click="navigateToHouseDetail" />
+    <div class="house-details" @click="navigateToHouseDetail">
       <h4>{{ house.location.street }}</h4>
       <p class="price">&euro; {{ formatPrice(house.price) }}</p>
       <p class="address">({{ house.location.houseNumber }} {{ house.location.city }})</p>
@@ -15,10 +15,10 @@
       </div>
     </div>
     <div class="house-actions" v-if="house.madeByMe === true">
-      <button class="edit-button">
+      <button class="edit-button" @click="navigateToHouseEdit">
         <img src="@/assets/icons/ic_edit@3x.png" alt="Edit Icon" class="icon small-icon" />
       </button>
-      <button class="delete-button" @click="deleteHouse(house.id)">
+      <button class="delete-button" @click="handleDelete">
         <img src="@/assets/icons/ic_delete@3x.png" alt="Delete Icon" class="icon small-icon" />
       </button>
     </div>
@@ -26,34 +26,39 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps } from 'vue'
 import router from '@/router'
-import api from '@/services/api'
+import { useHouseStore } from '@/stores/houseStore';
 
-defineProps({
+const props = defineProps({
   house: {
-    type: Object,
+    type: null,
     required: true,
   },
 })
 
-const emit = defineEmits(['delete-house'])
+const houseStore = useHouseStore();
 
 const formatPrice = (price) => {
   return price?.toLocaleString('nl-NL')
 }
 
-const navigateToHouseDetail = (id) => {
-  router.push(`/houses/${id}`)
+const navigateToHouseDetail = () => {
+  router.push(`/houses/${props.house.id}`)
 }
 
-const deleteHouse = async (id) => {
-  try {
-    await api.deleteHouse(id)
-    emit('delete-house', id)
-  } catch (error) {
-    console.error('Error deleting house:', error)
+const handleDelete = async () => {
+  if (confirm('Are you sure you want to delete this house?')) {
+    try {
+      await houseStore.deleteHouse(props.house.id);
+    } catch (error) {
+      console.error('Error deleting house:', error);
+      alert('Failed to delete the house. Please try again.');
+    }
   }
+};
+const navigateToHouseEdit = () => {
+  router.push(`/houses/${props.house.id}/edit`)
 }
 
 </script>
