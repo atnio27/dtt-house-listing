@@ -1,7 +1,7 @@
 <template>
   <div class="house-list">
     <div v-for="house in houses" :key="house.id">
-      <HouseCard :house="house" @delete-house="$emit('delete-house', $event)" />
+      <HouseCard :house="house" />
     </div>
   </div>
 </template>
@@ -16,6 +16,4 @@ defineProps({
     required: true,
   },
 })
-
-defineEmits(['delete-house'])
 </script>
