@@ -2,8 +2,10 @@
   <div class="house-detail">
     <BackNavigation />
 
-    <div class="content-wrapper">
-      <HouseCardDetailed :house="house" />
+    <div v-if="isLoading" class="loading">Loading...</div>
+    <div v-else-if="error" class="error">{{ error }}</div>
+    <div v-else class="content-wrapper">
+      <HouseCardDetailed :house="currentHouse" />
 
       <div class="sidebar">
         <h5>Recommended for you</h5>
@@ -16,38 +18,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRoute, onBeforeRouteUpdate } from 'vue-router'
-import api from '../services/api.js'
+import { computed, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useHouseStore } from '@/stores/houseStore'
 import HouseList from '@/components/HouseList.vue'
 import HouseCardDetailed from '@/components/HouseCardDetailed.vue'
 import BackNavigation from '@/components/BackNavigation.vue'
 
 const route = useRoute()
+const houseStore = useHouseStore()
 
-const id = route.params.id
+const currentHouse = computed(() => houseStore.currentHouse)
+const isLoading = computed(() => houseStore.isLoading)
+const error = computed(() => houseStore.error)
 
-const house = ref(null)
-const recommendations = ref([])
+const recommendations = computed(() => {
+  const filteredHouses = houseStore.houses.filter(h => h.id !== currentHouse.value?.id)
+  const start = Math.floor((Math.random() % 0.7) * filteredHouses.length)
+  return filteredHouses.slice(start, start + 3)
+})
 
 const loadHouseData = async (id) => {
-  try {
-    const response = await api.getHouseById(id)
-    house.value = response.data[0]
-
-    const recommendationsResponse = await api.getHouses()
-    const filteredRecommendations = recommendationsResponse.data.filter((h) => h.id !== +id)
-    const start = Math.floor((Math.random() % 0.7) * 10)
-    recommendations.value = filteredRecommendations.slice(start, start + 3)
-  } catch (error) {
-    console.error('Error fetching house data:', error)
+  await houseStore.fetchHouseById(id)
+  if (!houseStore.houses.length) {
+    await houseStore.fetchHouses()
   }
 }
 
-loadHouseData(id)
+onMounted(() => {
+  loadHouseData(route.params.id)
+})
 
-onBeforeRouteUpdate((to) => {
-  loadHouseData(to.params.id)
+watch(() => route.params.id, (newId) => {
+  loadHouseData(newId)
 })
 </script>
 
