@@ -7,6 +7,10 @@ export const useHouseStore = defineStore('house', {
     currentHouse: null,
     isLoading: false,
     error: null,
+    deletionConfirmation: {
+      isOpen: false,
+      houseId: null,
+    },
   }),
   getters: {
     getHouseById: (state) => (id) => {
@@ -102,6 +106,22 @@ export const useHouseStore = defineStore('house', {
         console.error('Error uploading image:', error)
       } finally {
         this.isLoading = false
+      }
+    },
+    openDeletionConfirmation(houseId) {
+      this.deletionConfirmation.isOpen = true
+      this.deletionConfirmation.houseId = houseId
+    },
+
+    closeDeletionConfirmation() {
+      this.deletionConfirmation.isOpen = false
+      this.deletionConfirmation.houseId = null
+    },
+
+    async confirmDeleteHouse() {
+      if (this.deletionConfirmation.houseId) {
+        await this.deleteHouse(this.deletionConfirmation.houseId)
+        this.closeDeletionConfirmation()
       }
     },
   },
