@@ -5,11 +5,11 @@
     <div class="info">
       <div class="title-section">
         <h1>{{ house?.location?.street }}</h1>
-        <div class="action-buttons">
+        <div class="action-buttons" v-if="house?.madeByMe === true">
           <button class="edit-button" @click="navigateToHouseEdit">
             <img src="../assets/icons/ic_edit@3x.png" alt="Edit" class="icon" />
           </button>
-          <button class="delete-button" @click="handleDelete">
+          <button class="delete-button" @click="openDeleteConfirmation">
             <img src="../assets/icons/ic_delete@3x.png" alt="Delete" class="icon" />
           </button>
         </div>
@@ -18,7 +18,7 @@
       <div class="info-details">
         <p class="address">
           <img src="../assets/icons/ic_location@3x.png" alt="Location" class="icon" />
-          <span>{{ house?.location?.postcode }} {{ house?.location?.city }}</span>
+          <span>{{ house?.location?.zip }} {{ house?.location?.city }}</span>
         </p>
 
         <div class="details-grid">
@@ -54,11 +54,12 @@
         <p class="description">{{ house?.description }}</p>
       </div>
     </div>
+
   </div>
 </template>
 
 <script setup>
-import router from '@/router';
+import router from '@/router'
 import { useHouseStore } from '@/stores/houseStore';
 
 const props = defineProps({
@@ -74,16 +75,8 @@ const formatPrice = (price) => {
   return price?.toLocaleString('nl-NL')
 }
 
-const handleDelete = async () => {
-  if (confirm('Are you sure you want to delete this house?')) {
-    try {
-      await houseStore.deleteHouse(props.house.id);
-      router.push('/houses');
-    } catch (error) {
-      console.error('Error deleting house:', error);
-      alert('Failed to delete the house. Please try again.');
-    }
-  }
+const openDeleteConfirmation = () => {
+  houseStore.openDeletionConfirmation(props.house.id);
 };
 
 const navigateToHouseEdit = () => {
@@ -117,11 +110,6 @@ const navigateToHouseEdit = () => {
       }
     }
 
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
-
     .edit-button,
     .delete-button {
       background: none;
@@ -137,7 +125,7 @@ const navigateToHouseEdit = () => {
     }
 
     .info-details {
-      padding: 5px;
+      padding-top: 5px;
       font-size: small;
       display: flex;
       flex-direction: column;
@@ -176,5 +164,32 @@ const navigateToHouseEdit = () => {
       }
     }
   }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.cancel-button,
+.delete-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background-color: var(--tertiary-1);
+  color: var(--secondary-text);
+  border: none;
+}
+
+.delete-button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
 }
 </style>
