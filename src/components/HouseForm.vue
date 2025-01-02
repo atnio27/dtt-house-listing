@@ -18,7 +18,7 @@
           <div class="form-group">
             <label for="houseNumber">House number*</label>
             <input type="number" id="houseNumber" v-model="formData.houseNumber" placeholder="Enter house number"
-              :class="{ error: errors.houseNumber }" />
+              :class="{ error: errors.houseNumber }" min="1" />
             <span class="error-message" v-if="errors.houseNumber">{{ errors.houseNumber }}</span>
           </div>
 
@@ -63,14 +63,14 @@
           <div class="form-group full-width">
             <label for="price">Price*</label>
             <input type="number" id="price" v-model="formData.price" placeholder="e.g. €150.000"
-              :class="{ error: errors.price }" />
+              :class="{ error: errors.price }" min="1" />
             <span class="error-message" v-if="errors.price">{{ errors.price }}</span>
           </div>
 
           <div class="form-group">
             <label for="size">Size*</label>
             <input type="number" id="size" v-model="formData.size" placeholder="e.g. 60m2"
-              :class="{ error: errors.size }" />
+              :class="{ error: errors.size }" min="1" />
             <span class="error-message" v-if="errors.size">{{ errors.size }}</span>
           </div>
 
@@ -86,14 +86,14 @@
           <div class="form-group">
             <label for="bedrooms">Bedrooms*</label>
             <input type="number" id="bedrooms" v-model="formData.bedrooms" placeholder="Enter amount"
-              :class="{ error: errors.bedrooms }" />
+              :class="{ error: errors.bedrooms }" min="0" />
             <span class="error-message" v-if="errors.bedrooms">{{ errors.bedrooms }}</span>
           </div>
 
           <div class="form-group">
             <label for="bathrooms">Bathrooms*</label>
             <input type="number" id="bathrooms" v-model="formData.bathrooms" placeholder="Enter amount"
-              :class="{ error: errors.bathrooms }" />
+              :class="{ error: errors.bathrooms }" min="0" />
             <span class="error-message" v-if="errors.bathrooms">{{ errors.bathrooms }}</span>
           </div>
 
@@ -487,7 +487,6 @@ textarea {
 }
 
 .background-wrapper {
-  position: relative;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
