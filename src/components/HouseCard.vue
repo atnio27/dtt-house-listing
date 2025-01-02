@@ -4,7 +4,7 @@
     <div class="house-details" @click="navigateToHouseDetail">
       <h4>{{ house.location.street }}</h4>
       <p class="price">&euro; {{ formatPrice(house.price) }}</p>
-      <p class="address">({{ house.location.houseNumber }} {{ house.location.city }})</p>
+      <p class="address">{{ house.location.zip }} {{ house.location.city }}</p>
       <div class="house-features">
         <span class="feature"><img src="@/assets/icons/ic_bed@3x.png" alt="Bed Icon" class="icon small-icon" />
           {{ house.rooms.bedrooms }}</span>
@@ -18,7 +18,7 @@
       <button class="edit-button" @click="navigateToHouseEdit">
         <img src="@/assets/icons/ic_edit@3x.png" alt="Edit Icon" class="icon small-icon" />
       </button>
-      <button class="delete-button" @click="handleDelete">
+      <button class="delete-button" @click="openDeleteConfirmation">
         <img src="@/assets/icons/ic_delete@3x.png" alt="Delete Icon" class="icon small-icon" />
       </button>
     </div>
@@ -32,7 +32,7 @@ import { useHouseStore } from '@/stores/houseStore';
 
 const props = defineProps({
   house: {
-    type: null,
+    type: Object,
     required: true,
   },
 })
@@ -47,20 +47,13 @@ const navigateToHouseDetail = () => {
   router.push(`/houses/${props.house.id}`)
 }
 
-const handleDelete = async () => {
-  if (confirm('Are you sure you want to delete this house?')) {
-    try {
-      await houseStore.deleteHouse(props.house.id);
-    } catch (error) {
-      console.error('Error deleting house:', error);
-      alert('Failed to delete the house. Please try again.');
-    }
-  }
+const openDeleteConfirmation = () => {
+  houseStore.openDeletionConfirmation(props.house.id);
 };
+
 const navigateToHouseEdit = () => {
   router.push(`/houses/${props.house.id}/edit`)
 }
-
 </script>
 
 <style>
@@ -96,7 +89,6 @@ const navigateToHouseEdit = () => {
   flex-grow: 1;
   margin-left: 16px;
 
-  /* i need price to be smaller */
   .price {
     margin-top: 10px;
     font-size: small;
@@ -125,7 +117,8 @@ const navigateToHouseEdit = () => {
 
 .house-actions {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
+  padding-bottom: 80px;
   align-items: flex-end;
   gap: 8px;
 }
